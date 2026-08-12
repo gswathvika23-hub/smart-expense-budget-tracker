@@ -67,3 +67,13 @@ class BudgetStatusOut(BaseModel):
     spent: float
     remaining: float
     percent_used: float
+
+# ---------- Categorization Schemas ----------
+
+class CategorizeRequest(BaseModel):
+    description: str
+
+class CategorizeResponse(BaseModel):
+    suggested_category_id: int
+    suggested_category_name: str
+    confidence: float
