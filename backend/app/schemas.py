@@ -37,3 +37,33 @@ class ExpenseOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+ # ---------- Budget Schemas ----------
+
+class BudgetCreate(BaseModel):
+    category_id: int
+    monthly_limit: float
+    month: str  # format: "YYYY-MM", e.g. "2026-08"
+
+class BudgetUpdate(BaseModel):
+    category_id: Optional[int] = None
+    monthly_limit: Optional[float] = None
+    month: Optional[str] = None
+
+class BudgetOut(BaseModel):
+    id: int
+    category_id: int
+    monthly_limit: float
+    month: str
+
+    class Config:
+        from_attributes = True
+
+class BudgetStatusOut(BaseModel):
+    id: int
+    category_id: int
+    monthly_limit: float
+    month: str
+    spent: float
+    remaining: float
+    percent_used: float
