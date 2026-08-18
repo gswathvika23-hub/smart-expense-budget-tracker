@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axiosConfig";
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import {PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, 
+  BarChart, Bar, XAxis, YAxis,
+} from "recharts";
 
 const COLORS = ["#6366F1", "#22C55E", "#F59E0B", "#EF4444"];
 
@@ -49,6 +51,15 @@ export default function Dashboard() {
     value,
   }));
 
+  const monthlyTotals = expenses.reduce((acc, exp) => {
+    const month = exp.date ? exp.date.slice(0, 7) : "Unknown";
+    acc[month] = (acc[month] || 0) + Number(exp.amount);
+    return acc;
+  }, {});
+  const monthlyChartData = Object.entries(monthlyTotals)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([month, total]) => ({ month, total }));
+
   if (loading) return <div style={{ padding: 24 }}>Loading dashboard...</div>;
 
   return (
@@ -83,6 +94,22 @@ export default function Dashboard() {
               <Tooltip />
               <Legend />
             </PieChart>
+          </ResponsiveContainer>
+        )}
+      </section>
+
+      <section style={{ margin: "24px 0" }}>
+        <h2>Monthly Spending</h2>
+        {monthlyChartData.length === 0 ? (
+          <p>No expenses yet.</p>
+        ) : (
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={monthlyChartData}>
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="total" fill="#6366F1" />
+            </BarChart>
           </ResponsiveContainer>
         )}
       </section>
