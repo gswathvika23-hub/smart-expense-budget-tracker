@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+   baseURL: "https://smart-expense-budget-tracker-temy.onrender.com",
 });
 
 // Automatically attach the JWT token to every request, if one exists
